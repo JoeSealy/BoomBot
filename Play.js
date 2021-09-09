@@ -19,22 +19,22 @@ module.exports = {
         const deletequeue = (id) => message.client.queue.delete(id);
         var song;
       
-        if (!channel) return error("You must join a voice channel to play music!");
+        if (!channel) return error("Ayo, get yo B-hind in a channel befow i git in.");
       
         if (!channel.permissionsFor(message.client.user).has("CONNECT"))
-          return error("I don't have permission to join the voice channel");
+          return error("Get yo boss to get me in");
       
         if (!channel.permissionsFor(message.client.user).has("SPEAK"))
-          return error("I don't have permission to speak in the voice channel");
+          return error("The top dog needs me to get me to talk yo");
       
         const query = args.join(" ");
       
-        if (!query) return error("You didn't provide a song name to play!");
+        if (!query) return error("what should i be playin out this tech box man");
       
         if (query.includes("www.youtube.com")) {
           try {
             const ytdata = await await yt.getBasicInfo(query);
-            if (!ytdata) return error("No song found for the url provided");
+            if (!ytdata) return error("Yo bro you be lackin with these links ya dig");
             song = {
               name: Util.escapeMarkdown(ytdata.videoDetails.title),
               thumbnail:
@@ -77,7 +77,7 @@ module.exports = {
           return send(
             new MessageEmbed()
               .setAuthor(
-                "The song has been added to the queue",
+                "i added this mcshizzle to be played soon",
                 "https://img.icons8.com/color/2x/cd--v3.gif"
               )
               .setColor("F93CCA")
