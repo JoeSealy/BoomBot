@@ -1,15 +1,14 @@
 const Discord = require("discord.js");
 const config = require("./Data/config.json");
-const {DisTube, Song} = require('distube');
+const {DisTube} = require('distube');
 const intents = new Discord.Intents(32767);
 const client = new Discord.Client({intents });
 
 const distube = new DisTube(client, {searchSongs: 1, emitNewSongOnly: true});
-
+const effectsArray = new Array("3d", "bassboost", "echo", "karaoke", "nightcore", "vaporwave");
 client.on("ready",() =>{
     console.log("All good my g");
 })
-
 
 client.on("messageCreate", async (message) =>{
     if (message.author.bot) return;
@@ -25,7 +24,6 @@ client.on("messageCreate", async (message) =>{
         })
 
     }
-
     if(command  === ("say"))
     {
         message.channel.send({
@@ -33,19 +31,19 @@ client.on("messageCreate", async (message) =>{
 
         })
     }
-
-
+    if(command === ("help"))
+    {
+        message.channel.send("$play, $stop, $skip, $queue, options for songs === $3d, $bassboost, $echo, $karaoke, $nightcore, $vaporwave")
+    }
 
 
     //MUSIC TIME 
-    
     if(command === ("play"))
     {
         console.log("play");
        distube.play(message, args.join(" ")); 
 
     }
-
     if(command  === ("stop"))
     {
         console.log("stop");
@@ -53,13 +51,10 @@ client.on("messageCreate", async (message) =>{
         message.channel.send("Yo i stopped the music my g");
 
     }
-
     if(command === ("skip")){
         distube.skip(message);
         message.channel.send("I skipped this mofo fo yo");
     }
-    
-
     if(command === ("queue"))
     {
         let queue = distube.getQueue(message);
@@ -71,6 +66,17 @@ client.on("messageCreate", async (message) =>{
         const filter = distube.setFilter(message, command);
         message.channel.send("Current queue filter: " + (filter.join(", ") || "Off"));
     }
+
+    if(command === ("effects"))
+    {
+        for(let i = 0; i <= 6; i++){
+             effectsArray.toString();
+             effectsArray[i].includes(command)
+             const filter = distube.setFilter(message, command);
+             message.channel.send("Current queue filter: " + (filter.join(", ") || "Off"));
+        }
+    }
+
 })
 
 
