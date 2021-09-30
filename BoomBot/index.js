@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const config = require("./Data/config.json");
-const {DisTube} = require('distube');
+const {DisTube, DisTubeError} = require('distube');
 const intents = new Discord.Intents(32767);
 const client = new Discord.Client({intents });
 
@@ -38,12 +38,18 @@ client.on("messageCreate", async (message) =>{
 
 
     //MUSIC TIME 
-    if(command === (("play") || ("p")))
+    if(command === (("play"||"p")))
     {
-        console.log("play");
-       distube.play(message, args.join(" ")); 
+        distube.play(message, args.join(" ")); 
+        message.channel.send(
+            "i be playing..."
+        )
+        message.channel.send({
+            content: message.content.slice(5)
 
+        })
     }
+
     if(command  === ("stop"))
     {
         console.log("stop");
@@ -51,29 +57,31 @@ client.on("messageCreate", async (message) =>{
         message.channel.send("Yo i stopped the music my g");
 
     }
-    if(command === ("skip")){
+
+    if(command === ("skip"))
+    {
         distube.skip(message);
         message.channel.send("I skipped this mofo fo yo");
     }
-    if(command === ("queue"))
+
+    if(command ===("seek"))
     {
-        let queue = distube.getQueue(message);
-        message.channel.send("added song to the queue my g" + 
-        queue.songs.map((song , id) =>  `${id + 1}.${song.name} -\`${song.formattedDuration}\``).slice(0, 10).join());
-    }
-    if ([`3d`, `bassboost`, `echo`, `karaoke`, `nightcore`, `vaporwave`].includes(command)) {
-        const filter = distube.setFilter(message, command);
-        message.channel.send("Current queue filter: " + (filter.join(", ") || "Off"));
+       distube.seek(message, Number(args[0]))
+       message.channel.send(`i moved the time to ${message} `);
     }
 
-    if(command === ("effects"))
+    if(command === ("queue"))
     {
-        for(let i = 0; i <= 6; i++){
-             effectsArray.toString();
-             effectsArray[i].includes(command)
-             const filter = distube.setFilter(message, command);
-             message.channel.send("Current queue filter: " + (filter.join(", ") || "Off"));
-        }
+        const queue = distube.getQueue(message);
+        message.channel.send('Current queue:\n' + queue.songs.map((song, id) =>
+        `**${id+1}**. [${song.name}](${song.url}) - \`${song.formattedDuration}\``
+        ).join("\n"));
+    }
+
+    if ([`3d`, `bassboost`, `echo`, `karaoke`, `nightcore`, `vaporwave`].includes(command)) 
+    {
+        const filter = distube.setFilter(message, command);
+        message.channel.send("Current queue filter: " + (filter.join(", ") || "Off"));
     }
 
 })
